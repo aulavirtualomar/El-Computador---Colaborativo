@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathTech Pro Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .active-btn { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border-right: 4px solid #3b82f6; }
+        .hidden-section { display: none; }
+        .card-modern { background: #1e293b; border: 1px solid #334155; transition: all 0.3s; }
+        .card-modern:hover { border-color: #3b82f6; transform: translateY(-2px); }
+    </style>
+</head>
+<body class="bg-[#0f172a] text-slate-200">
+
+    <div class="flex min-h-screen">
+        <aside class="w-64 bg-[#1e293b] border-r border-slate-700 hidden md:block">
+            <div class="p-6">
+                <h1 class="text-2xl font-bold text-blue-500"><i class="fas fa-pi mr-2"></i>MathTech</h1>
+            </div>
+            <nav class="mt-6 space-y-1">
+                <button onclick="switchTab('simulador')" id="tab-simulador" class="w-full flex items-center px-6 py-4 active-btn">
+                    <i class="fas fa-gamepad mr-3 w-5"></i> Simulador
+                </button>
+                <button onclick="switchTab('recursos')" id="tab-recursos" class="w-full flex items-center px-6 py-4 text-slate-400 hover:bg-slate-800">
+                    <i class="fas fa-book-open mr-3 w-5"></i> Recursos TIC
+                </button>
+                <div class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest mt-10">Documentación</div>
+                <button class="w-full flex items-center px-6 py-4 text-slate-400 hover:bg-slate-800">
+                    <i class="fas fa-file-alt mr-3 w-5"></i> Guía Docente
+                </button>
+            </nav>
+        </aside>
+
+        <main class="flex-1 p-8">
+            
+            <div id="section-simulador">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold">Simulador de Aprendizaje</h2>
+                    <p class="text-slate-400">Práctica interactiva de nivel básico.</p>
+                </div>
+
+                <div class="max-w-2xl mx-auto bg-slate-800 p-10 rounded-3xl border border-slate-700 shadow-xl text-center">
+                    <div class="mb-4 text-blue-400 font-bold uppercase text-sm tracking-widest">Aritmética / Geometría</div>
+                    <div id="question" class="text-6xl font-black text-white mb-10 tracking-tight">8 x 9</div>
+                    
+                    <div class="flex flex-col items-center gap-4">
+                        <input type="number" id="ans" placeholder="?" class="w-32 bg-slate-900 border-2 border-slate-700 rounded-2xl p-4 text-center text-3xl focus:border-blue-500 outline-none transition-all">
+                        <button onclick="check()" class="px-10 py-4 bg-blue-600 hover:bg-blue-500 rounded-2xl font-bold text-white shadow-lg shadow-blue-900/20">Verificar</button>
+                    </div>
+                    <div id="msg" class="mt-8 h-6 font-bold"></div>
+                </div>
+            </div>
+
+            <div id="section-recursos" class="hidden-section">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold">Transformando las Matemáticas</h2>
+                    <p class="text-slate-400">Información extraída del documento técnico.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="card-modern p-6 rounded-2xl">
+                        <h3 class="text-blue-400 font-bold mb-4"><i class="fas fa-tools mr-2"></i> Herramientas Clave</h3>
+                        <div class="space-y-3 text-sm">
+                            <p><strong>Khan Academy:</strong> Mejora el rendimiento mediante planificación y evaluación.</p>
+                            <p><strong>Desmos:</strong> Ideal para funciones y gráficas en secundaria.</p>
+                            <p><strong>GeoGebra:</strong> Fundamental para geometría 2D y 3D.</p>
+                        </div>
+                    </div>
+
+                    <div class="card-modern p-6 rounded-2xl">
