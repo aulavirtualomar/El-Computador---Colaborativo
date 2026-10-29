@@ -1,73 +1,195 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MathTech Pro Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .active-btn { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border-right: 4px solid #3b82f6; }
-        .hidden-section { display: none; }
-        .card-modern { background: #1e293b; border: 1px solid #334155; transition: all 0.3s; }
-        .card-modern:hover { border-color: #3b82f6; transform: translateY(-2px); }
-    </style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Exploradores del Computador</title>
+<style>
+:root{--blue:#0755a5;--blue2:#0878d1;--green:#20b76b;--bg:#f2f8ff;--ink:#16324f;--muted:#637b93;--line:#d8e7f5;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial}
+header{background:linear-gradient(110deg,#06458d,#0787d4);color:white;padding:18px max(18px,calc((100% - 1180px)/2));display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.brand{display:flex;gap:12px;align-items:center}.logo{font-size:30px;background:#ffffff22;border-radius:12px;padding:8px}.brand h1{font-size:clamp(20px,3vw,28px);margin:0}.brand p{margin:2px 0 0;color:#dceeff;font-size:13px}
+main{max-width:1180px;margin:22px auto;padding:0 16px}.hero{background:linear-gradient(120deg,#e2f3ff,#fff);border:1px solid var(--line);border-radius:22px;padding:24px;display:grid;grid-template-columns:1.4fr .8fr;gap:20px;align-items:center}
+.hero h2{font-size:clamp(25px,4vw,38px);line-height:1.1;margin:0 0 12px;color:#064c98}.hero p{color:#45647f;max-width:650px}.illustration{font-size:clamp(70px,10vw,120px);text-align:center;filter:drop-shadow(0 8px 10px #3a8dc433)}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.tab,.btn{border:0;border-radius:11px;padding:10px 15px;font-weight:700;cursor:pointer}.tab{background:white;color:var(--blue);border:1px solid var(--line)}.tab.active,.btn.primary{background:var(--blue2);color:white}.btn.green{background:var(--green);color:white}.btn.light{background:#eaf4ff;color:var(--blue)}.btn.danger{background:#fff0f0;color:#b3261e}.btn:disabled{opacity:.45;cursor:not-allowed}
+.panel{background:white;border:1px solid var(--line);border-radius:18px;padding:20px;margin:14px 0;box-shadow:0 6px 20px #123e6208}.panel h2,.panel h3{margin-top:0}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.stat{background:#f4f9ff;border:1px solid var(--line);padding:14px;border-radius:14px}.stat strong{display:block;font-size:25px;color:var(--blue)}.stat span{font-size:13px;color:var(--muted)}
+label{display:block;font-weight:650;margin:10px 0 5px}input,select,textarea{width:100%;padding:11px 12px;border:1px solid #c8d9e9;border-radius:10px;font:inherit;background:white;color:var(--ink)}textarea{min-height:90px;resize:vertical}.formrow{display:grid;grid-template-columns:1fr 1fr;gap:12px}.component-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.component{border:1px solid var(--line);border-radius:14px;padding:15px;background:#fbfdff}.component .emoji{font-size:32px}.component h3{margin:5px 0}.component p{margin:0;color:var(--muted);font-size:14px}
+table{width:100%;border-collapse:collapse;min-width:680px}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);font-size:14px}th{background:#f2f8ff;color:#34556f} .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}.pill{display:inline-block;border-radius:99px;padding:3px 9px;font-size:12px;background:#e5f8ee;color:#137747;font-weight:700}.muted{color:var(--muted);font-size:14px}.notice{padding:12px 14px;background:#eff9ff;border-left:4px solid #1682ce;border-radius:8px;margin:12px 0}.hidden{display:none!important}.student-card{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}.student-card strong{display:block}.student-card .score{font-size:24px;color:var(--green);font-weight:800}.activity{padding:10px 0;border-bottom:1px solid var(--line)}.activity:last-child{border-bottom:0}.right{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.status{font-size:13px;color:#e7f7ff}.footer{text-align:center;color:var(--muted);font-size:12px;padding:28px 10px}
+@media(max-width:800px){.hero{grid-template-columns:1fr}.illustration{display:none}.stats{grid-template-columns:repeat(2,1fr)}.grid,.component-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.grid,.component-grid,.formrow{grid-template-columns:1fr}.panel{padding:15px}.right{justify-content:flex-start}}
+</style>
 </head>
-<body class="bg-[#0f172a] text-slate-200">
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
 
-    <div class="flex min-h-screen">
-        <aside class="w-64 bg-[#1e293b] border-r border-slate-700 hidden md:block">
-            <div class="p-6">
-                <h1 class="text-2xl font-bold text-blue-500"><i class="fas fa-pi mr-2"></i>MathTech</h1>
-            </div>
-            <nav class="mt-6 space-y-1">
-                <button onclick="switchTab('simulador')" id="tab-simulador" class="w-full flex items-center px-6 py-4 active-btn">
-                    <i class="fas fa-gamepad mr-3 w-5"></i> Simulador
-                </button>
-                <button onclick="switchTab('recursos')" id="tab-recursos" class="w-full flex items-center px-6 py-4 text-slate-400 hover:bg-slate-800">
-                    <i class="fas fa-book-open mr-3 w-5"></i> Recursos TIC
-                </button>
-                <div class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest mt-10">Documentación</div>
-                <button class="w-full flex items-center px-6 py-4 text-slate-400 hover:bg-slate-800">
-                    <i class="fas fa-file-alt mr-3 w-5"></i> Guía Docente
-                </button>
-            </nav>
-        </aside>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyBqOWLU2ZLYyBl3fnz1Qrz2ZDU8mccnUG4",
+    authDomain: "app-exploradores-computador.firebaseapp.com",
+    databaseURL: "https://app-exploradores-computador-default-rtdb.firebaseio.com",
+    projectId: "app-exploradores-computador",
+    storageBucket: "app-exploradores-computador.firebasestorage.app",
+    messagingSenderId: "332761121717",
+    appId: "1:332761121717:web:dd6e4cefd0c05815480ffc",
+    measurementId: "G-MGX580HD0R"
+  };
 
-        <main class="flex-1 p-8">
-            
-            <div id="section-simulador">
-                <div class="mb-8">
-                    <h2 class="text-3xl font-bold">Simulador de Aprendizaje</h2>
-                    <p class="text-slate-400">Práctica interactiva de nivel básico.</p>
-                </div>
-
-                <div class="max-w-2xl mx-auto bg-slate-800 p-10 rounded-3xl border border-slate-700 shadow-xl text-center">
-                    <div class="mb-4 text-blue-400 font-bold uppercase text-sm tracking-widest">Aritmética / Geometría</div>
-                    <div id="question" class="text-6xl font-black text-white mb-10 tracking-tight">8 x 9</div>
-                    
-                    <div class="flex flex-col items-center gap-4">
-                        <input type="number" id="ans" placeholder="?" class="w-32 bg-slate-900 border-2 border-slate-700 rounded-2xl p-4 text-center text-3xl focus:border-blue-500 outline-none transition-all">
-                        <button onclick="check()" class="px-10 py-4 bg-blue-600 hover:bg-blue-500 rounded-2xl font-bold text-white shadow-lg shadow-blue-900/20">Verificar</button>
-                    </div>
-                    <div id="msg" class="mt-8 h-6 font-bold"></div>
-                </div>
-            </div>
-
-            <div id="section-recursos" class="hidden-section">
-                <div class="mb-8">
-                    <h2 class="text-3xl font-bold">Transformando las Matemáticas</h2>
-                    <p class="text-slate-400">Información extraída del documento técnico.</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="card-modern p-6 rounded-2xl">
-                        <h3 class="text-blue-400 font-bold mb-4"><i class="fas fa-tools mr-2"></i> Herramientas Clave</h3>
-                        <div class="space-y-3 text-sm">
-                            <p><strong>Khan Academy:</strong> Mejora el rendimiento mediante planificación y evaluación.</p>
-                            <p><strong>Desmos:</strong> Ideal para funciones y gráficas en secundaria.</p>
-                            <p><strong>GeoGebra:</strong> Fundamental para geometría 2D y 3D.</p>
-                        </div>
-                    </div>
-
-                    <div class="card-modern p-6 rounded-2xl">
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+<body>
+<header><div class="brand"><div class="logo">💻</div><div><h1>Exploradores del Computador</h1><p>¡Aprende, comparte y construye juntos!</p></div></div><div id="connection" class="status">Conectando con el aula…</div></header>
+<main>
+<section class="hero"><div><h2>¡Tu equipo tiene una misión!</h2><p>Descubre los componentes del computador, explica para qué sirven y comparte tus ideas con tus compañeros. Cada aporte cuenta.</p><div class="right" style="justify-content:flex-start"><span>🔎 Explora</span><span>🤝 Colabora</span><span>⭐ Gana puntos</span></div></div><div class="illustration">🖥️⌨️🖱️</div></section>
+<nav>
+<button class="tab active" data-view="student">👩‍🎓 Área del estudiante</button>
+<button class="tab" data-view="teacher">📊 Panel docente</button>
+<button class="tab" data-view="lesson">📚 Aprende</button>
+</nav>
+<section id="student" class="view">
+<div class="panel"><h2>👋 Ingresa a la actividad</h2><p class="muted">Usa tu nombre o código y el grupo que indicó tu docente.</p>
+<div class="formrow"><div><label for="studentName">Nombre o código del estudiante</label><input id="studentName" maxlength="70" placeholder="Ej. María López"></div><div><label for="studentGroup">Grupo / sección</label><input id="studentGroup" maxlength="40" placeholder="Ej. 5to A"></div></div>
+<button class="btn primary" id="joinBtn">Entrar a la misión</button><span id="joinStatus" class="muted"></span></div>
+<div id="studentWork" class="hidden">
+<div class="panel"><h2>🧩 Reto 1: comparte un descubrimiento</h2><p>Elige un componente y explica con tus palabras qué función cumple. Tu aporte quedará registrado en el panel del docente.</p>
+<div class="formrow"><div><label for="componentSelect">Componente</label><select id="componentSelect"><option value="">Selecciona uno…</option><option>Monitor</option><option>Teclado</option><option>Ratón (mouse)</option><option>Unidad del sistema (CPU)</option><option>Memoria RAM</option><option>Disco / SSD</option><option>Parlantes</option><option>Impresora</option></select></div><div><label for="contributionType">Tipo de aporte</label><select id="contributionType"><option>Explicación</option><option>Ejemplo de uso</option><option>Clasificación</option><option>Pregunta para el grupo</option></select></div></div>
+<label for="contributionText">Mi aporte</label><textarea id="contributionText" maxlength="600" placeholder="Ej. El teclado sirve para escribir letras y números…"></textarea>
+<button class="btn green" id="submitContribution">Guardar mi aporte (+10 puntos)</button><span id="contributionStatus" class="muted"></span></div>
+<div class="panel"><h2>🏆 Reto 2: comprueba lo que sabes</h2><p class="muted">Cada respuesta correcta suma 10 puntos. Puedes intentarlo de nuevo.</p><div id="quiz"></div><button class="btn primary" id="submitQuiz">Calificar mis respuestas</button><span id="quizStatus" class="muted"></span></div>
+<div class="panel"><h2>📌 Mi progreso</h2><div id="myProgress" class="notice">Entra a la misión para ver tu progreso.</div><h3>Mis aportes registrados</h3><div id="myContributions" class="muted">Todavía no hay aportes.</div></div>
+</div></section>
+<section id="teacher" class="view hidden">
+<div class="panel"><h2>📊 Panel del docente</h2><p>Vista compartida de los estudiantes y sus aportes. Los datos se actualizan en tiempo real cuando Firebase está configurado.</p>
+<div class="formrow"><div><label for="teacherPin">PIN docente (solo para mostrar/ocultar controles)</label><input id="teacherPin" type="password" placeholder="Crea un PIN local"></div><div style="align-self:end"><button class="btn light" id="unlockTeacher">Mostrar controles</button></div></div>
+<div id="teacherControls" class="hidden"><div class="notice">Aviso: el PIN de esta versión es solo una barrera visual. Para proteger calificaciones en un despliegue público, configura autenticación y reglas seguras en el backend.</div><div class="right"><button class="btn primary" id="downloadCsv">Descargar informe CSV</button><button class="btn light" id="downloadJson">Copia de respaldo JSON</button></div></div>
+<div class="stats"><div class="stat"><strong id="statStudents">0</strong><span>Estudiantes</span></div><div class="stat"><strong id="statContributions">0</strong><span>Aportes</span></div><div class="stat"><strong id="statAverage">0</strong><span>Promedio / 100</span></div><div class="stat"><strong id="statCompleted">0</strong><span>Cuestionarios realizados</span></div></div></div>
+<div class="panel"><h3>👥 Todos los estudiantes</h3><div id="studentCards" class="grid"><p class="muted">Esperando participantes…</p></div></div>
+<div class="panel"><h3>📝 Registro de aportes</h3><div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Estudiante</th><th>Grupo</th><th>Componente</th><th>Tipo</th><th>Aporte</th><th>Puntos</th></tr></thead><tbody id="contributionRows"><tr><td colspan="7">Sin aportes registrados.</td></tr></tbody></table></div></div>
+<div class="panel"><h3>📈 Informe de calificaciones</h3><div class="table-wrap"><table><thead><tr><th>Estudiante</th><th>Grupo</th><th>Aportes</th><th>Quiz</th><th>Puntaje total</th><th>Última actividad</th></tr></thead><tbody id="gradeRows"><tr><td colspan="6">Todavía no hay calificaciones.</td></tr></tbody></table></div><p class="muted">Puntaje total = aportes (máximo 40 puntos) + cuestionario (máximo 60 puntos). El cuestionario contiene 6 preguntas.</p></div>
+</section>
+<section id="lesson" class="view hidden"><div class="panel"><h2>📚 Conoce los componentes</h2><p>Un computador funciona gracias al trabajo conjunto de sus partes. Algunos componentes permiten introducir información, otros la procesan y otros muestran o guardan los resultados.</p><div class="component-grid" id="componentLessons"></div></div></section>
+</main>
+<div class="footer">Exploradores del Computador · Actividad educativa colaborativa · Diseñada para móvil, tableta y computadora</div>
+<script type="module">
+/*
+CONFIGURACIÓN: crea un proyecto Firebase, habilita Authentication > Anonymous y Realtime Database.
+Copia los datos de tu aplicación web en firebaseConfig. Consulta INSTRUCCIONES.md.
+*/
+const firebaseConfig = {
+  apiKey: "PEGA_AQUI_TU_API_KEY",
+  authDomain: "PEGA_AQUI.firebaseapp.com",
+  databaseURL: "https://app-exploradores-computador-default-rtdb.firebaseio.com/",
+  projectId: "PEGA_AQUI",
+  storageBucket: "PEGA_AQUI.appspot.com",
+  messagingSenderId: "PEGA_AQUI",
+  appId: "PEGA_AQUI"
+};
+let db=null, auth=null, firebaseReady=false, currentStudent=null;
+let students={}, contributions={}, quizResults={};
+const components = [
+["🖥️","Monitor","Muestra textos, imágenes, videos y los resultados del trabajo."],
+["⌨️","Teclado","Permite escribir letras, números y comandos."],
+["🖱️","Ratón (mouse)","Ayuda a mover el puntero, seleccionar y abrir elementos."],
+["🗄️","Unidad del sistema","Contiene componentes que procesan y coordinan las operaciones del computador."],
+["🧠","Memoria RAM","Mantiene temporalmente los datos de los programas que se están usando."],
+["💾","Disco / SSD","Guarda archivos y programas aunque el computador esté apagado."],
+["🔊","Parlantes","Reproducen sonidos, música y audio."],
+["🖨️","Impresora","Produce copias en papel de documentos e imágenes."]
+];
+const questions=[
+{q:"¿Qué componente muestra imágenes y textos?",opts:["Teclado","Monitor","Ratón","Micrófono"],a:1},
+{q:"¿Cuál permite escribir letras y números?",opts:["Parlantes","Monitor","Teclado","Impresora"],a:2},
+{q:"¿Qué dispositivo ayuda a mover el puntero?",opts:["Ratón (mouse)","Disco SSD","RAM","Monitor"],a:0},
+{q:"¿Dónde se guardan los archivos de forma permanente?",opts:["Memoria RAM","Disco o SSD","Teclado","Parlantes"],a:1},
+{q:"¿Qué componente conserva temporalmente datos de programas en uso?",opts:["Impresora","Monitor","Memoria RAM","Ratón"],a:2},
+{q:"¿Cuál es un dispositivo de salida?",opts:["Teclado","Ratón","Micrófono","Monitor"],a:3}
+];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const stamp=()=>new Date().toISOString();
+const fmt=t=>t?new Date(t).toLocaleString():"—";
+function renderLessons(){ $("componentLessons").innerHTML=components.map(c=>`<article class="component"><div class="emoji">${c[0]}</div><h3>${c[1]}</h3><p>${c[2]}</p></article>`).join(""); }
+function renderQuiz(){ $("quiz").innerHTML=questions.map((q,i)=>`<div class="activity"><strong>${i+1}. ${q.q}</strong>${q.opts.map((o,j)=>`<label style="font-weight:400"><input style="width:auto;margin-right:8px" type="radio" name="q${i}" value="${j}"> ${o}</label>`).join("")}<div id="feedback${i}" class="muted"></div></div>`).join(""); }
+function render(){
+ const ss=Object.values(students), cc=Object.values(contributions);
+ $("statStudents").textContent=ss.length; $("statContributions").textContent=cc.length;
+ $("statAverage").textContent=ss.length?Math.round(ss.reduce((n,s)=>n+(Number(s.score)||0),0)/ss.length):0;
+ $("statCompleted").textContent=Object.keys(quizResults).length;
+ $("studentCards").innerHTML=ss.length?ss.sort((a,b)=>a.name.localeCompare(b.name)).map(s=>`<div class="student-card"><strong>👤 ${esc(s.name)}</strong><span class="muted">${esc(s.group||"Sin grupo")}</span><div class="score">${Number(s.score)||0}<small style="font-size:13px"> / 100</small></div><span class="pill">${quizResults[s.id]?"Cuestionario realizado":"En progreso"}</span><p class="muted">${cc.filter(c=>c.studentId===s.id).length} aporte(s) · ${fmt(s.updatedAt)}</p></div>`).join(""):'<p class="muted">Todavía no hay estudiantes conectados.</p>';
+ $("contributionRows").innerHTML=cc.length?cc.sort((a,b)=>b.createdAt.localeCompare(a.createdAt)).map(c=>`<tr><td>${esc(fmt(c.createdAt))}</td><td>${esc(c.studentName)}</td><td>${esc(c.group)}</td><td>${esc(c.component)}</td><td>${esc(c.type)}</td><td>${esc(c.text)}</td><td>${c.points||10}</td></tr>`).join(""):'<tr><td colspan="7">Sin aportes registrados.</td></tr>';
+ $("gradeRows").innerHTML=ss.length?ss.sort((a,b)=>(Number(b.score)||0)-(Number(a.score)||0)).map(s=>`<tr><td>${esc(s.name)}</td><td>${esc(s.group)}</td><td>${cc.filter(c=>c.studentId===s.id).length}</td><td>${quizResults[s.id]?quizResults[s.id].score:"Pendiente"}</td><td><strong>${Number(s.score)||0}/100</strong></td><td>${esc(fmt(s.updatedAt))}</td></tr>`).join(""):'<tr><td colspan="6">Todavía no hay calificaciones.</td></tr>';
+ if(currentStudent){
+   const mine=cc.filter(c=>c.studentId===currentStudent.id);
+   $("myProgress").innerHTML=`<strong>${esc(currentStudent.name)}</strong>: ${Number(students[currentStudent.id]?.score)||0}/100 puntos · ${mine.length} aporte(s) · ${quizResults[currentStudent.id]?"Cuestionario completado":"Cuestionario pendiente"}.`;
+   $("myContributions").innerHTML=mine.length?mine.sort((a,b)=>b.createdAt.localeCompare(a.createdAt)).map(c=>`<div class="activity"><strong>${esc(c.component)}</strong> — ${esc(c.type)}<p>${esc(c.text)}</p><span class="muted">${fmt(c.createdAt)}</span></div>`).join(""):"Todavía no hay aportes.";
+ }
+}
+function saveLocal(){localStorage.setItem("exploradores_local",JSON.stringify({students,contributions,quizResults}));}
+function loadLocal(){try{const d=JSON.parse(localStorage.getItem("exploradores_local")||"{}");students=d.students||{};contributions=d.contributions||{};quizResults=d.quizResults||{};}catch{}}
+function isConfigReady(){return firebaseConfig.apiKey!=="PEGA_AQUI_TU_API_KEY" && firebaseConfig.projectId!=="PEGA_AQUI";}
+async function setupFirebase(){
+ if(!isConfigReady()){loadLocal();$("connection").textContent="Modo local · configura Firebase para sincronizar";render();return;}
+ try{
+  const appMod=await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+  const authMod=await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js");
+  const dbMod=await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js");
+  const app=appMod.initializeApp(firebaseConfig);auth=authMod.getAuth(app);db=dbMod.getDatabase(app);
+  await authMod.signInAnonymously(auth);firebaseReady=true;
+  const [s,c,q]=await Promise.all([
+   new Promise((resolve,reject)=>dbMod.onValue(dbMod.ref(db,"classroom/students"),snap=>resolve(snap.val()||{}),reject)),
+   new Promise((resolve,reject)=>dbMod.onValue(dbMod.ref(db,"classroom/contributions"),snap=>resolve(snap.val()||{}),reject)),
+   new Promise((resolve,reject)=>dbMod.onValue(dbMod.ref(db,"classroom/quizResults"),snap=>resolve(snap.val()||{}),reject))
+  ]);
+  students=s;contributions=c;quizResults=q;render();
+  dbMod.onValue(dbMod.ref(db,"classroom"),snap=>{const v=snap.val()||{};students=v.students||{};contributions=v.contributions||{};quizResults=v.quizResults||{};if(currentStudent&&students[currentStudent.id])currentStudent=students[currentStudent.id];render();});
+  window._fb={dbMod};$("connection").textContent="● Aula conectada · datos compartidos en tiempo real";$("connection").style.color="#d5ffe7";
+ }catch(e){console.error(e);loadLocal();render();$("connection").textContent="No se pudo conectar · revisa Firebase";alert("No se pudo conectar con Firebase. Revisa la configuración, Authentication anónima y las reglas de Realtime Database. Se mostrará el modo local.");}
+}
+async function put(path,value){if(firebaseReady){await window._fb.dbMod.set(window._fb.dbMod.ref(db,path),value);}else{saveLocal();}}
+async function patch(path,value){if(firebaseReady){await window._fb.dbMod.update(window._fb.dbMod.ref(db,path),value);}else saveLocal();}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("hidden",x.id!==b.dataset.view));}));
+$("joinBtn").addEventListener("click",async()=>{
+ const name=$("studentName").value.trim(),group=$("studentGroup").value.trim();
+ if(!name||!group){$("joinStatus").textContent=" Escribe tu nombre y grupo para continuar.";return;}
+ const id=firebaseReady?(auth.currentUser.uid):("local_"+name.toLowerCase().replace(/[^a-z0-9]/g,"_")+"_"+group.toLowerCase().replace(/[^a-z0-9]/g,"_"));
+ currentStudent={...(students[id]||{}),id,name,group,updatedAt:stamp(),score:Number(students[id]?.score)||0};
+ students[id]=currentStudent;await put("classroom/students/"+id,currentStudent);
+ $("studentWork").classList.remove("hidden");$("joinStatus").textContent=" ¡Bienvenido/a, "+name+"!";render();
+});
+$("submitContribution").addEventListener("click",async()=>{
+ if(!currentStudent){$("contributionStatus").textContent=" Primero entra a la misión.";return;}
+ const component=$("componentSelect").value,type=$("contributionType").value,text=$("contributionText").value.trim();
+ if(!component||text.length<8){$("contributionStatus").textContent=" Selecciona un componente y escribe al menos 8 caracteres.";return;}
+ const id="c_"+Date.now()+"_"+Math.random().toString(36).slice(2,7);
+ const count=Object.values(contributions).filter(c=>c.studentId===currentStudent.id).length;
+ const points=count>=4?0:10;
+ const c={id,studentId:currentStudent.id,studentName:currentStudent.name,group:currentStudent.group,component,type,text,points,createdAt:stamp()};
+ contributions[id]=c;const contributionTotal=Object.values(contributions).filter(x=>x.studentId===currentStudent.id).reduce((n,x)=>n+(Number(x.points)||0),0); const s={...students[currentStudent.id],updatedAt:stamp(),score:Math.min(100,contributionTotal+(Number(quizResults[currentStudent.id]?.score)||0))};
+ students[s.id]=s;currentStudent=s;
+ try{await put("classroom/contributions/"+id,c);await put("classroom/students/"+s.id,s);saveLocal();$("contributionStatus").textContent=points?` ¡Aporte registrado! +${points} puntos.`:" Aporte registrado. Alcanzaste el máximo de puntos por aportes."; $("contributionText").value="";render();}
+ catch(e){$("contributionStatus").textContent=" No se pudo guardar. Comprueba la conexión.";}
+});
+$("submitQuiz").addEventListener("click",async()=>{
+ if(!currentStudent){$("quizStatus").textContent=" Primero entra a la misión.";return;}
+ let correct=0;questions.forEach((q,i)=>{const sel=document.querySelector(`input[name="q${i}"]:checked`);if(sel&&Number(sel.value)===q.a)correct++;const fb=$("feedback"+i);fb.textContent=sel?(Number(sel.value)===q.a?"✅ ¡Correcto!":"💡 Repasa la respuesta: "+q.opts[q.a]):"⚠️ No respondiste esta pregunta.";});
+ const quizScore=Math.round(correct/questions.length*60);quizResults[currentStudent.id]={studentId:currentStudent.id,studentName:currentStudent.name,score:quizScore,correct,total:questions.length,updatedAt:stamp()};
+ const contributionTotal=Object.values(contributions).filter(x=>x.studentId===currentStudent.id).reduce((n,x)=>n+(Number(x.points)||0),0); const s={...students[currentStudent.id],score:Math.min(100,contributionTotal+quizScore),updatedAt:stamp()};students[s.id]=s;currentStudent=s;
+ try{await put("classroom/quizResults/"+s.id,quizResults[s.id]);await put("classroom/students/"+s.id,s);saveLocal();$("quizStatus").textContent=` Resultado: ${correct}/${questions.length} correctas. +${quizScore} puntos de cuestionario.`;render();}
+ catch(e){$("quizStatus").textContent=" No se pudo guardar la calificación. Comprueba la conexión.";}
+});
+$("unlockTeacher").addEventListener("click",()=>{$("teacherControls").classList.toggle("hidden");});
+function download(name,content,type){const blob=new Blob([content],{type});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;a.click();URL.revokeObjectURL(a.href);}
+$("downloadCsv").addEventListener("click",()=>{
+ const rows=[["Estudiante","Grupo","Cantidad de aportes","Puntos por aportes","Puntaje del cuestionario","Respuestas correctas","Puntaje total","Última actividad"]];
+ Object.values(students).forEach(s=>{const mine=Object.values(contributions).filter(c=>c.studentId===s.id),q=quizResults[s.id];rows.push([s.name,s.group,mine.length,mine.reduce((n,c)=>n+(Number(c.points)||0),0),q?.score??"",q?`${q.correct}/${q.total}`:"Pendiente",s.score||0,s.updatedAt||""]);});
+ const csv="\ufeff"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(";")).join("\r\n");download("informe_exploradores_computador.csv",csv,"text/csv;charset=utf-8");
+});
+$("downloadJson").addEventListener("click",()=>download("respaldo_exploradores_computador.json",JSON.stringify({students,contributions,quizResults,exportedAt:stamp()},null,2),"application/json"));
+renderLessons();renderQuiz();setupFirebase();
+</script>
+</body></html>
